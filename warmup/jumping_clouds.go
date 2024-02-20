@@ -1,12 +1,11 @@
-package main
+package warmup
 
 import (
-    "bufio"
-    "fmt"
-    "io"
-    "os"
-    "strconv"
-    "strings"
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -17,64 +16,49 @@ import (
  */
 
 func jumpingOnClouds(c []int32) int32 {
-    n := len(c)
-    jumps := int32(0)
+	n := len(c)
+	jumps := int32(0)
 
-    for i := 0; i < n-1; {
-        if i+2 < n && c[i+2] == 0 {
-            i += 2 
-        } else {
-            i++ 
-        }
-        jumps++
-    }
+	for i := 0; i < n-1; {
+		if i+2 < n && c[i+2] == 0 {
+			i += 2
+		} else {
+			i++
+		}
+		jumps++
+	}
 
-    return jumps
+	return jumps
 }
 
 func main() {
-    reader := bufio.NewReaderSize(os.Stdin, 16 * 1024 * 1024)
+	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
-    stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
-    checkError(err)
+	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
+	checkError(err)
 
-    defer stdout.Close()
+	defer stdout.Close()
 
-    writer := bufio.NewWriterSize(stdout, 16 * 1024 * 1024)
+	writer := bufio.NewWriterSize(stdout, 16*1024*1024)
 
-    nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
-    checkError(err)
-    n := int32(nTemp)
+	nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
+	checkError(err)
+	n := int32(nTemp)
 
-    cTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
+	cTemp := strings.Split(strings.TrimSpace(readLine(reader)), " ")
 
-    var c []int32
+	var c []int32
 
-    for i := 0; i < int(n); i++ {
-        cItemTemp, err := strconv.ParseInt(cTemp[i], 10, 64)
-        checkError(err)
-        cItem := int32(cItemTemp)
-        c = append(c, cItem)
-    }
+	for i := 0; i < int(n); i++ {
+		cItemTemp, err := strconv.ParseInt(cTemp[i], 10, 64)
+		checkError(err)
+		cItem := int32(cItemTemp)
+		c = append(c, cItem)
+	}
 
-    result := jumpingOnClouds(c)
+	result := jumpingOnClouds(c)
 
-    fmt.Fprintf(writer, "%d\n", result)
+	fmt.Fprintf(writer, "%d\n", result)
 
-    writer.Flush()
-}
-
-func readLine(reader *bufio.Reader) string {
-    str, _, err := reader.ReadLine()
-    if err == io.EOF {
-        return ""
-    }
-
-    return strings.TrimRight(string(str), "\r\n")
-}
-
-func checkError(err error) {
-    if err != nil {
-        panic(err)
-    }
+	writer.Flush()
 }
